@@ -83,7 +83,8 @@ class SceneContextScene<C extends SceneContext> {
   async enter(
     sceneId: string,
     initialState: object = {},
-    silent: boolean = false
+    silent: boolean = false,
+    invokeSceneEnter: boolean = false, 
   ) {
     if (!this.scenes.has(sceneId)) {
       throw new Error(`Can't find scene: ${sceneId}`)
@@ -98,7 +99,7 @@ class SceneContextScene<C extends SceneContext> {
     if (ttl !== undefined) {
       this.session.expires = now() + ttl
     }
-    if (this.current === undefined || silent) {
+    if (this.current === undefined || (silent && !invokeSceneEnter)) {
       return
     }
     const handler =
